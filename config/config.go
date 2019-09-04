@@ -2,7 +2,6 @@ package config
 
 // Configuration holds all configuration for modem-scraper.
 type Configuration struct {
-	ModemType    string
 	IP           string
 	PollSchedule string
 	MQTT         MQTT
