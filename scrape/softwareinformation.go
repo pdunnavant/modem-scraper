@@ -1,10 +1,14 @@
 package scrape
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	_ "github.com/influxdata/influxdb1-client" // this is important because of a bug in go mod
+	client "github.com/influxdata/influxdb1-client/v2"
 )
 
 // SoftwareInformation holds data pulled from the /cmswinfo.html page.
@@ -16,6 +20,31 @@ type SoftwareInformation struct {
 	SerialNumber                   string
 	UptimeMins                     int
 	UptimeString                   string
+}
+
+// ToInfluxPoints converts SoftwareInformation to "points"
+func (s SoftwareInformation) ToInfluxPoints() ([]*client.Point, error) {
+	var points []*client.Point
+
+	// No tags for this specific struct.
+	tags := map[string]string{}
+	fields := map[string]interface{}{
+		"standard_specification_compliant": s.StandardSpecificationCompliant,
+		"hardware_version":                 s.HardwareVersion,
+		"software_version":                 s.SoftwareVersion,
+		"mac_address":                      s.MACAddress,
+		"serial_number":                    s.SerialNumber,
+		"uptime_mins":                      s.UptimeMins,
+		"uptime_string":                    s.UptimeString,
+	}
+	point, err := client.NewPoint("software_information", tags, fields, time.Now())
+	if err != nil {
+		return nil, fmt.Errorf("error generating points data for SoftwareInformation: %s", err.Error())
+	}
+
+	points = append(points, point)
+
+	return points, nil
 }
 
 const standardSpecificationCompliantSelector = "#bg3 > div.container > div.content > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(2)"

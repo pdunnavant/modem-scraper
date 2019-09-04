@@ -14,8 +14,11 @@ import (
 // the InfluxDB server configuration within the given
 // configuration.
 func Publish(config config.InfluxDB, modemInformation scrape.ModemInformation) error {
+	addr := makeAddr(config.Hostname, config.Port)
+
+	fmt.Printf("Connecting to InfluxDB server [%s]...\n", addr)
 	influx, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr:     makeAddr(config.Hostname, config.Port),
+		Addr:     addr,
 		Username: config.Username,
 		Password: config.Password,
 	})
@@ -28,12 +31,17 @@ func Publish(config config.InfluxDB, modemInformation scrape.ModemInformation) e
 		Database:  config.Database,
 		Precision: "s",
 	})
-	batchPoints.AddPoints(buildPoints())
+	points, err := modemInformation.ToInfluxPoints()
+	if err != nil {
+		return err
+	}
+	batchPoints.AddPoints(points)
 
-	// err = influx.Write(batchPoints)
-	// if err != nil {
-	// 	return fmt.Errorf("error writing data to InfluxDB: %s", err.Error())
-	// }
+	fmt.Printf("Writing [%d] data points to InfluxDB database [%s]...\n", len(points), config.Database)
+	err = influx.Write(batchPoints)
+	if err != nil {
+		return fmt.Errorf("error writing data to InfluxDB: %s", err.Error())
+	}
 
 	return nil
 }

@@ -1,10 +1,14 @@
 package scrape
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	_ "github.com/influxdata/influxdb1-client" // this is important because of a bug in go mod
+	client "github.com/influxdata/influxdb1-client/v2"
 )
 
 // UpstreamBondedChannel holds all info from the
@@ -18,6 +22,32 @@ type UpstreamBondedChannel struct {
 	FrequencyHz   int
 	WidthHz       int
 	PowerdBmV     float64
+}
+
+// ToInfluxPoints converts UpstreamBondedChannel to "points"
+func (u UpstreamBondedChannel) ToInfluxPoints() ([]*client.Point, error) {
+	var points []*client.Point
+
+	tags := map[string]string{
+		"channel": string(u.Channel),
+	}
+	fields := map[string]interface{}{
+		"channel":         u.Channel,
+		"channel_id":      u.ChannelID,
+		"lock_status":     u.LockStatus,
+		"us_channel_type": u.USChannelType,
+		"frequency_hz":    u.FrequencyHz,
+		"width_hz":        u.WidthHz,
+		"power_dbmv":      u.PowerdBmV,
+	}
+	point, err := client.NewPoint("downstream_bonded_channel", tags, fields, time.Now())
+	if err != nil {
+		return nil, fmt.Errorf("error generating points data for UpstreamBondedChannel: %s", err.Error())
+	}
+
+	points = append(points, point)
+
+	return points, nil
 }
 
 const upstreamBondedChannelTableSelector = "#bg3 > div.container > div.content > center:nth-child(8) > table"
