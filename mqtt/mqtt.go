@@ -21,6 +21,7 @@ func Publish(config config.MQTT, modemInformation scrape.ModemInformation) error
 	opts.SetPassword(config.Password)
 
 	client := MQTT.NewClient(opts)
+	defer client.Disconnect(250)
 
 	fmt.Printf("Connecting to MQTT server [%s]...\n", broker)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -36,8 +37,6 @@ func Publish(config config.MQTT, modemInformation scrape.ModemInformation) error
 	// fmt.Println(payload)
 	token := client.Publish(config.Topic, byte(0), false, payload)
 	token.Wait()
-
-	client.Disconnect(250)
 
 	fmt.Println("Finished publishing.")
 

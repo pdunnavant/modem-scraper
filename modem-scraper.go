@@ -7,6 +7,7 @@ import (
 	"os/signal"
 
 	"github.com/pdunnavant/modem-scraper/config"
+	"github.com/pdunnavant/modem-scraper/influxdb"
 	"github.com/pdunnavant/modem-scraper/mqtt"
 	"github.com/pdunnavant/modem-scraper/scrape"
 	"github.com/robfig/cron"
@@ -28,17 +29,17 @@ func main() {
 			return
 		}
 
-		// fmt.Printf("%# v\n", pretty.Formatter(modemInformation))
-
 		err = mqtt.Publish(configuration.MQTT, *modemInformation)
 		if err != nil {
 			fmt.Println(err.Error())
 			return
 		}
 
-		// TODO:
-		// - send to mqtt
-		// - send to influxdb
+		err = influxdb.Publish(configuration.InfluxDB, *modemInformation)
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
 
 		fmt.Println("Going back to sleep...")
 	})
