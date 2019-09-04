@@ -25,7 +25,7 @@ const macAddressSelector = "#bg3 > div.container > div.content > table:nth-child
 const serialNumberSelector = "#bg3 > div.container > div.content > table:nth-child(2) > tbody > tr:nth-child(6) > td:nth-child(2)"
 const uptimeSelector = "#bg3 > div.container > div.content > table:nth-child(5) > tbody > tr:nth-child(2) > td:nth-child(2)"
 
-func scrapeSoftwareInformation(doc *goquery.Document) (*SoftwareInformation, error) {
+func scrapeSoftwareInformation(doc *goquery.Document) *SoftwareInformation {
 	uptimeString := doc.Find(uptimeSelector).Text()
 	uptimeMins := uptimeToMinutes(uptimeString)
 	softwareInformation := SoftwareInformation{
@@ -38,7 +38,7 @@ func scrapeSoftwareInformation(doc *goquery.Document) (*SoftwareInformation, err
 		UptimeString:                   uptimeString,
 	}
 
-	return &softwareInformation, nil
+	return &softwareInformation
 }
 
 // "0 days 02h:44m:31s.00"

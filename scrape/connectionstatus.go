@@ -9,12 +9,12 @@ type ConnectionStatus struct {
 	UpstreamBondedChannels   []UpstreamBondedChannel
 }
 
-func scrapeConnectionStatus(doc *goquery.Document) (*ConnectionStatus, error) {
+func scrapeConnectionStatus(doc *goquery.Document) *ConnectionStatus {
 	connectionStatus := ConnectionStatus{
 		StartupProcedure:         scrapeStartupProcedure(doc),
 		DownstreamBondedChannels: scrapeDownstreamBondedChannels(doc),
 		UpstreamBondedChannels:   scrapeUpstreamBondedChannels(doc),
 	}
 
-	return &connectionStatus, nil
+	return &connectionStatus
 }
