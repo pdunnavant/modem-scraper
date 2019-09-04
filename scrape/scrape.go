@@ -17,10 +17,7 @@ func Scrape(config config.Configuration) (*ModemInformation, error) {
 	if err != nil {
 		return nil, err
 	}
-	connectionStatus, err := scrapeConnectionStatus(doc)
-	if err != nil {
-		return nil, err
-	}
+	connectionStatus := scrapeConnectionStatus(doc)
 
 	doc, err = getDocumentFromURL(config.IP + "/cmswinfo.html")
 	if err != nil {
