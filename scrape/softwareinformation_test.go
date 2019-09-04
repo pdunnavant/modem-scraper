@@ -42,8 +42,7 @@ func TestScrapeSoftwareInformation(t *testing.T) {
 		UptimeString:                   "1 days 14h:12m:38s.00",
 	}
 
-	actual, err := scrapeSoftwareInformation(doc)
-	assert.Nil(t, err)
+	actual := scrapeSoftwareInformation(doc)
 	assert.NotNil(t, actual)
 	assert.Equal(t, expected, actual)
 }
@@ -53,13 +52,11 @@ func getSoftwareInformationDocumentFromTestFile(t *testing.T) *goquery.Document 
 	fileReader, err := os.Open(filePath)
 	if err != nil {
 		t.Fatalf("unable to open file for reading: [%s]", filePath)
-		// return nil
 	}
 
 	doc, err := goquery.NewDocumentFromReader(fileReader)
 	if err != nil {
 		t.Fatalf("unable to generate goquery document from file: [%s]", filePath)
-		// return nil
 	}
 
 	return doc

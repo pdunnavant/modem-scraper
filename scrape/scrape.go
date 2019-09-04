@@ -26,10 +26,7 @@ func Scrape(config config.Configuration) (*ModemInformation, error) {
 	if err != nil {
 		return nil, err
 	}
-	softwareInformation, err := scrapeSoftwareInformation(doc)
-	if err != nil {
-		return nil, err
-	}
+	softwareInformation := scrapeSoftwareInformation(doc)
 
 	modemInformation := ModemInformation{
 		ConnectionStatus:    *connectionStatus,
