@@ -1,6 +1,6 @@
 package scrape
 
-import "github.com/pdunnavant/modem-scraper/config"
+import "github.com/PuerkitoBio/goquery"
 
 // ConnectionStatus holds all info from /cmconnectionstatus.html.
 type ConnectionStatus struct {
@@ -9,12 +9,7 @@ type ConnectionStatus struct {
 	UpstreamBondedChannels   []UpstreamBondedChannel
 }
 
-func scrapeConnectionStatus(config config.Configuration) (*ConnectionStatus, error) {
-	doc, err := getDocumentFromURL(config.IP + "/cmconnectionstatus.html")
-	if err != nil {
-		return nil, err
-	}
-
+func scrapeConnectionStatus(doc *goquery.Document) (*ConnectionStatus, error) {
 	connectionStatus := ConnectionStatus{
 		StartupProcedure:         scrapeStartupProcedure(doc),
 		DownstreamBondedChannels: scrapeDownstreamBondedChannels(doc),

@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/pdunnavant/modem-scraper/config"
+	"github.com/PuerkitoBio/goquery"
 )
 
 // SoftwareInformation holds data pulled from the /cmswinfo.html page.
@@ -25,12 +25,7 @@ const macAddressSelector = "#bg3 > div.container > div.content > table:nth-child
 const serialNumberSelector = "#bg3 > div.container > div.content > table:nth-child(2) > tbody > tr:nth-child(6) > td:nth-child(2)"
 const uptimeSelector = "#bg3 > div.container > div.content > table:nth-child(5) > tbody > tr:nth-child(2) > td:nth-child(2)"
 
-func scrapeSoftwareInformation(config config.Configuration) (*SoftwareInformation, error) {
-	doc, err := getDocumentFromURL(config.IP + "/cmswinfo.html")
-	if err != nil {
-		return nil, err
-	}
-
+func scrapeSoftwareInformation(doc *goquery.Document) (*SoftwareInformation, error) {
 	uptimeString := doc.Find(uptimeSelector).Text()
 	uptimeMins := uptimeToMinutes(uptimeString)
 	softwareInformation := SoftwareInformation{
