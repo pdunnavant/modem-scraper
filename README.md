@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pdunnavant/modem-scraper.svg?branch=master)](https://travis-ci.org/pdunnavant/modem-scraper)
+
 What does this do?
 ==========
 This application polls two pages on the Arris SB8200 cable modem:
