@@ -28,11 +28,12 @@ type UpstreamBondedChannel struct {
 func (u UpstreamBondedChannel) ToInfluxPoints() ([]*client.Point, error) {
 	var points []*client.Point
 
+	channelString := strconv.Itoa(u.Channel)
 	tags := map[string]string{
-		"channel": string(u.Channel),
+		"channel": channelString,
 	}
 	fields := map[string]interface{}{
-		"channel":         u.Channel,
+		// "channel":         u.Channel,
 		"channel_id":      u.ChannelID,
 		"lock_status":     u.LockStatus,
 		"us_channel_type": u.USChannelType,
@@ -40,7 +41,7 @@ func (u UpstreamBondedChannel) ToInfluxPoints() ([]*client.Point, error) {
 		"width_hz":        u.WidthHz,
 		"power_dbmv":      u.PowerdBmV,
 	}
-	point, err := client.NewPoint("downstream_bonded_channel", tags, fields, time.Now())
+	point, err := client.NewPoint("upstream_bonded_channel", tags, fields, time.Now())
 	if err != nil {
 		return nil, fmt.Errorf("error generating points data for UpstreamBondedChannel: %s", err.Error())
 	}

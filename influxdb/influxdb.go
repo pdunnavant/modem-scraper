@@ -14,6 +14,8 @@ import (
 // the InfluxDB server configuration within the given
 // configuration.
 func Publish(config config.InfluxDB, modemInformation scrape.ModemInformation) error {
+	start := time.Now()
+
 	addr := makeAddr(config.Hostname, config.Port)
 
 	fmt.Printf("Connecting to InfluxDB server [%s]...\n", addr)
@@ -42,6 +44,9 @@ func Publish(config config.InfluxDB, modemInformation scrape.ModemInformation) e
 	if err != nil {
 		return fmt.Errorf("error writing data to InfluxDB: %s", err.Error())
 	}
+
+	elapsed := time.Since(start)
+	fmt.Printf("Finished writing to InfluxDB. (Took %s.)\n", elapsed)
 
 	return nil
 }

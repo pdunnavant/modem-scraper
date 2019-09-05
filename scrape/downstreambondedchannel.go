@@ -2,6 +2,7 @@ package scrape
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
@@ -27,11 +28,12 @@ type DownstreamBondedChannel struct {
 func (d DownstreamBondedChannel) ToInfluxPoints() ([]*client.Point, error) {
 	var points []*client.Point
 
+	channelIDString := strconv.Itoa(d.ChannelID)
 	tags := map[string]string{
-		"channel_id": string(d.ChannelID),
+		"channel_id": channelIDString,
 	}
 	fields := map[string]interface{}{
-		"channel_id":     d.ChannelID,
+		// "channel_id":     d.ChannelID,
 		"lock_status":    d.LockStatus,
 		"modulation":     d.Modulation,
 		"frequency_hz":   d.FrequencyHz,
