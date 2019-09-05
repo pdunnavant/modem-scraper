@@ -1,3 +1,2 @@
 config.yaml
-coverage.out
-
+coverage.*
