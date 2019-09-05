@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/pdunnavant/modem-scraper.svg?branch=master)](https://travis-ci.org/pdunnavant/modem-scraper)
+[![codecov](https://codecov.io/gh/pdunnavant/modem-scraper/branch/master/graph/badge.svg)](https://codecov.io/gh/pdunnavant/modem-scraper)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 What does this do?
 ==========
