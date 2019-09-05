@@ -39,6 +39,7 @@ func getDocumentFromURL(url string) (*goquery.Document, error) {
 
 	start := time.Now()
 
+	// TODO: add a timeout here (10s?)
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err

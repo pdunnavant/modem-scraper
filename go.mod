@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/PuerkitoBio/goquery v1.5.0
 	github.com/eclipse/paho.mqtt.golang v1.2.0
+	github.com/influxdata/influxdb1-client v0.0.0-20190809212627-fc22c7df067e
 	github.com/karrick/godirwalk v1.10.12 // indirect
 	github.com/kr/pretty v0.1.0
 	github.com/mdempsky/gocode v0.0.0-20190203001940-7fb65232883f // indirect

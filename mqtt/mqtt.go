@@ -2,6 +2,7 @@ package mqtt
 
 import (
 	"fmt"
+	"time"
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	"github.com/pdunnavant/modem-scraper/config"
@@ -12,6 +13,8 @@ import (
 // the MQTT server configuration within the given
 // configuration.
 func Publish(config config.MQTT, modemInformation scrape.ModemInformation) error {
+	start := time.Now()
+
 	broker := makeBroker(config.Hostname, config.Port)
 
 	opts := MQTT.NewClientOptions()
@@ -21,6 +24,7 @@ func Publish(config config.MQTT, modemInformation scrape.ModemInformation) error
 	opts.SetPassword(config.Password)
 
 	client := MQTT.NewClient(opts)
+	defer client.Disconnect(250)
 
 	fmt.Printf("Connecting to MQTT server [%s]...\n", broker)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -37,9 +41,8 @@ func Publish(config config.MQTT, modemInformation scrape.ModemInformation) error
 	token := client.Publish(config.Topic, byte(0), false, payload)
 	token.Wait()
 
-	client.Disconnect(250)
-
-	fmt.Println("Finished publishing.")
+	elapsed := time.Since(start)
+	fmt.Printf("Finished publishing to MQTT. (Took %s.)\n", elapsed)
 
 	return nil
 }
