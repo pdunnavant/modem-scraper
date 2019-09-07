@@ -13,18 +13,12 @@ jobs:
     - stage: test
       go: 1.12.x
       script:
-        # - go test ./... -race -coverprofile=coverage.txt -covermode=atomic
         - ./scripts/test.sh
       after_success:
         - bash <(curl -s https://codecov.io/bash)
     - stage: build
       go: 1.12.x
       script:
-        # TODO: Calculate this from closest tag.
-        # - BUILD_VERSION="1.0.0"
-        # - FLAGS="-X main.BuildVersion=${BUILD_VERSION}"
-        # - go build -ldflags="${FLAGS}"
-        # - ./modem-scraper -version
         - ./scripts/build.sh
 
 # before_deploy:
