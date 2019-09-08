@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -14,7 +15,28 @@ import (
 	"github.com/spf13/viper"
 )
 
+// BuildVersion is the version of the binary, and is set with ldflags at build time.
+var BuildVersion = "UNKNOWN"
+
+// CliInputs holds the data passed in via CLI parameters
+type CliInputs struct {
+	BuildVersion string
+	ShowVersion  bool
+}
+
 func main() {
+	cliInputs := CliInputs{
+		BuildVersion: BuildVersion,
+	}
+	flags := flag.NewFlagSet("modem-scraper", 0)
+	flags.BoolVar(&cliInputs.ShowVersion, "version", false, "Print the version of modem-script")
+	flags.Parse(os.Args[1:])
+
+	if cliInputs.ShowVersion {
+		fmt.Println(cliInputs.BuildVersion)
+		os.Exit(0)
+	}
+
 	configuration, err := parseConfiguration()
 	if err != nil {
 		log.Fatalf(err.Error())
