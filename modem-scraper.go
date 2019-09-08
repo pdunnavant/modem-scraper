@@ -53,13 +53,13 @@ func main() {
 			return
 		}
 
-		err = mqtt.Publish(configuration.MQTT, *modemInformation)
+		err = influxdb.Publish(configuration.InfluxDB, *modemInformation)
 		if err != nil {
 			fmt.Println(err.Error())
 			return
 		}
 
-		err = influxdb.Publish(configuration.InfluxDB, *modemInformation)
+		err = mqtt.Publish(configuration.MQTT, *modemInformation)
 		if err != nil {
 			fmt.Println(err.Error())
 			return
