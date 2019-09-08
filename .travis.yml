@@ -28,13 +28,3 @@ jobs:
         directories:
           - ${HOME}/.cache/go-build
           - ${HOME}/gopath/pkg/mod
-
-# before_deploy:
-#   - git config --local user.name "${GIT_USER_NAME}"
-#   - git config --local user.email "${GIT_USER_EMAIL}"
-#   - git tag ${VERSION_TAG}
-#   - git push origin ${VERSION_TAG}
-
-# push go binary to github releases
-# build and push docker image with same version calculated earlier
-# deploy:

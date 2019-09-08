@@ -21,6 +21,7 @@ var BuildVersion = "UNKNOWN"
 // CliInputs holds the data passed in via CLI parameters
 type CliInputs struct {
 	BuildVersion string
+	Config       string
 	ShowVersion  bool
 }
 
@@ -29,6 +30,7 @@ func main() {
 		BuildVersion: BuildVersion,
 	}
 	flags := flag.NewFlagSet("modem-scraper", 0)
+	flags.StringVar(&cliInputs.Config, "config", "config.yaml", "Set the location for the YAML config file")
 	flags.BoolVar(&cliInputs.ShowVersion, "version", false, "Print the version of modem-script")
 	flags.Parse(os.Args[1:])
 
@@ -37,7 +39,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	configuration, err := parseConfiguration()
+	configuration, err := parseConfiguration(cliInputs.Config)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
@@ -74,9 +76,8 @@ func main() {
 	<-sig
 }
 
-func parseConfiguration() (*config.Configuration, error) {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
+func parseConfiguration(configPath string) (*config.Configuration, error) {
+	viper.SetConfigFile(configPath)
 	viper.AutomaticEnv()
 
 	viper.SetConfigType("yml")
