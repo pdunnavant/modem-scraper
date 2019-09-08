@@ -16,5 +16,6 @@ if [ "${TRAVIS_BRANCH}" = "master" ] && [ "${TRAVIS_PULL_REQUEST_BRANCH}" = "" ]
   git config --local user.name "${GIT_USER_NAME}"
   git config --local user.email "${GIT_USER_EMAIL}"
   git tag ${BUILD_VERSION}
-  git push origin ${BUILD_VERSION}
+  git remote add tag-origin https://${GITHUB_TOKEN}@github.com/pdunnavant/modem-scraper.git
+  git push tag-origin ${BUILD_VERSION}
 fi
