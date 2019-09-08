@@ -6,7 +6,7 @@ echo "Building binary with version [${BUILD_VERSION}]..."
 
 BINARY_NAME="modem-scraper"
 FLAGS="-X main.BuildVersion=${BUILD_VERSION}"
-go build -ldflags="${FLAGS}" -o ${BINARY_NAME}
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="${FLAGS}" -o ${BINARY_NAME}
 echo "Built version:"
 ./modem-scraper -version
 
