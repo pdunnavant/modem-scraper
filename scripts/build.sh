@@ -21,4 +21,14 @@ if [ "${TRAVIS_BRANCH}" = "master" ] && [ "${TRAVIS_PULL_REQUEST_BRANCH}" = "" ]
   git tag ${BUILD_VERSION}
   git remote add tag-origin https://${GITHUB_TOKEN}@github.com/pdunnavant/modem-scraper.git
   git push tag-origin ${BUILD_VERSION}
+
+  echo "Building image..."
+  IMAGE="pdunnavant/modem-scraper"
+  docker build . -t ${IMAGE}:${BUILD_VERSION}
+  docker tag ${IMAGE}:${BUILD_VERSION} ${IMAGE}:latest
+
+  echo "Pushing image to registry..."
+  echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin ${DOCKER_URL}
+  docker push ${IMAGE}:${BUILD_VERSION}
+  docker push ${IMAGE}:latest
 fi
