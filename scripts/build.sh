@@ -10,7 +10,7 @@ go build -ldflags="${FLAGS}"
 echo "Built version:"
 ./modem-scraper -version
 
-if [ "${TRAVIS_BRANCH}" = "master" ] ; then
+if [ "${TRAVIS_BRANCH}" = "master" ] && [ "${TRAVIS_PULL_REQUEST_BRANCH}" = "" ] ; then
   echo "Detected master branch; pushing version tag to repository..."
 
   git config --local user.name "${GIT_USER_NAME}"
