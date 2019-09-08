@@ -16,10 +16,16 @@ jobs:
         - ./scripts/test.sh
       after_success:
         - bash <(curl -s https://codecov.io/bash)
+      cache:
+        - ${HOME}/.cache/go-build
+        - ${HOME}/gopath/pkg/mod
     - stage: build
       go: 1.12.x
       script:
         - ./scripts/build.sh
+      cache:
+        - ${HOME}/.cache/go-build
+        - ${HOME}/gopath/pkg/mod
 
 # before_deploy:
 #   - git config --local user.name "${GIT_USER_NAME}"
