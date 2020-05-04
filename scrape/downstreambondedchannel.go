@@ -33,7 +33,6 @@ func (d DownstreamBondedChannel) ToInfluxPoints() ([]*client.Point, error) {
 		"channel_id": channelIDString,
 	}
 	fields := map[string]interface{}{
-		// "channel_id":     d.ChannelID,
 		"lock_status":    d.LockStatus,
 		"modulation":     d.Modulation,
 		"frequency_hz":   d.FrequencyHz,
