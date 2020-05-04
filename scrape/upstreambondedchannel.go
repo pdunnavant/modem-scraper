@@ -29,12 +29,12 @@ func (u UpstreamBondedChannel) ToInfluxPoints() ([]*client.Point, error) {
 	var points []*client.Point
 
 	channelString := strconv.Itoa(u.Channel)
+	channelIDString := strconv.Itoa(u.ChannelID)
 	tags := map[string]string{
-		"channel": channelString,
+		"channel":    channelString,
+		"channel_id": channelIDString,
 	}
 	fields := map[string]interface{}{
-		// "channel":         u.Channel,
-		"channel_id":      u.ChannelID,
 		"lock_status":     u.LockStatus,
 		"us_channel_type": u.USChannelType,
 		"frequency_hz":    u.FrequencyHz,
